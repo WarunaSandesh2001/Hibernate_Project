@@ -5,10 +5,12 @@ import entity.Course;
 import entity.Registration;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import util.FactoryConfiguration;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RegisterDAOImpl implements RegisterDAO {
@@ -24,19 +26,25 @@ public class RegisterDAOImpl implements RegisterDAO {
     }
 
     @Override
-    public Course getCourseByStudent(String nic) throws Exception {
+    public ArrayList<Object[]> getCourseByStudent(String nic) throws Exception {
         Session session = FactoryConfiguration.getInstance().getSession();
         Transaction transaction = session.beginTransaction();
-        session.createQuery("SELECT courses_PID FROM registration_course WHERE registrationList_regNo = : SID");
-        //query.setParameter("SID", nic);
-        /*List<Course> list = query.list();
-        for (Course course : list) {
-            transaction.commit();
-            session.close();
-            return course;
+        //NativeQuery sqlQuery = session.createSQLQuery("SELECT * FROM registration_course WHERE registrationList_regNo =:SID");
+        NativeQuery query = session.createSQLQuery("SELECT r.fee,rc.courses_PID FROM Registration r INNER JOIN Registration_course rc WHERE r.regNo = :studentId and rc.registrationList_regNo=r.regNo");
+
+        //session.createQuery("SELECT s.id,s.name,s.address,s.contact,s.age,r.regNo,rd.Course_ID,c.program FROM Student s INNER JOIN Registration r INNER JOIN Registration_Details rd,Course c WHERE s.id = :studentId and r.Student_ID=s.id and r.regNo=rd.Reg_ID and c.programId=rd.Course_ID");
+        query.setParameter("studentId", nic);
+        List<Object[]> list = query.list();
+        //List list = sqlQuery.list();
+
+        //System.out.println(list.toString());
+
+        //List<String> courseList = null;
+        /*for (String course : list) {
+            courseList.addAll(list);
         }*/
         transaction.commit();
         session.close();
-        return null;
+        return (ArrayList<Object[]>)list;
     }
 }

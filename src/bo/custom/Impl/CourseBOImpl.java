@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CourseBOImpl implements CourseBO {
-    private CourseDAO courseDAO= new CourseDAOImpl();/*;DAOFactory.getInstance().getDAO(DAOType.CUSTOMER);*/
+    private CourseDAO courseDAO= (CourseDAO) DAOFactory.getDAOFactory().getDAO(DAOFactory.DAOTypes.COURSE);
 
     @Override
     public boolean saveCourse(CourseDTO dto) throws Exception {

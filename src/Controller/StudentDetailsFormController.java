@@ -4,8 +4,11 @@ import bo.custom.Impl.CourseBOImpl;
 import bo.custom.Impl.RegisterBOImpl;
 import bo.custom.Impl.StudentBOImpl;
 import dto.StudentDTO;
+import dto.tm.CourseDetailsForStudent;
 import entity.Course;
 import entity.Student;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -74,14 +77,18 @@ public class StudentDetailsFormController {
     }
 
     public void selectCourseOnAction(MouseEvent mouseEvent) throws Exception {
-        //try {
+        try {
             Student student = students.get(selectedRow);
-            Course course = new RegisterBOImpl().getCourseByStudent((student.getSID()));
-            ArrayList<String> c = new ArrayList<>();
-            c.add(course.getPName());
-            colCourse.setCellValueFactory(new PropertyValueFactory<>(c.get(1)));
+            ArrayList<Object[]> courseByStudent = new RegisterBOImpl().getCourseByStudent((student.getSID()));
 
-            tblCourse.getItems().setAll(c);
-        //}catch (Exception e){}
+            System.out.println(courseByStudent.toString());
+            ObservableList<CourseDetailsForStudent> obLIst = FXCollections.observableArrayList();
+            for (Object[] obj : courseByStudent) {
+                obLIst.add(new CourseDetailsForStudent(obj[1].toString()));
+            }
+            colCourse.setCellValueFactory(new PropertyValueFactory<>("courseID"));
+
+            tblCourse.getItems().setAll(obLIst);
+        }catch (Exception e){}
     }
 }

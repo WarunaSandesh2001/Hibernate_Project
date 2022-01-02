@@ -60,21 +60,19 @@ public class RegisterFormController {
     }
 
     public void registerOnAction(ActionEvent actionEvent) throws Exception {
-        //try {
+        try {
             if(!txtName.getText().isEmpty() && !txtNIC.getText().isEmpty() && !txtAddress.getText().isEmpty() && !txtContact.getText().isEmpty() && !txtDOB.getText().isEmpty() && !txtAge.getText().isEmpty()) {
                 Date date = Date.valueOf(LocalDate.now());
                 List<Course>  courseArrayList= new ArrayList<>();
                 courseArrayList.add(course);
                 Student student = new Student(lblSID.getText(), txtName.getText(), txtNIC.getText(), txtAddress.getText(), txtContact.getText(), txtDOB.getText(), txtAge.getText());
-                //StudentDTO student1 = new StudentDTO(lblSID.getText(), txtName.getText(), txtNIC.getText(), txtAddress.getText(), txtContact.getText(), txtDOB.getText(), txtAge.getText());
-                /*new StudentBOImpl().saveStudent(student1);*/
+
 
                 if (!cmbCourseType.getSelectionModel().isEmpty()) {
                     System.out.println(courseArrayList.toString());
-                    //System.out.println("A");
                     RegisterDTO registration = new RegisterDTO(lblSID.getText(),date,course.getFee(),student,courseArrayList);
                     System.out.println(registration.toString());
-                    //try {
+                    try {
                         boolean saved = new RegisterBOImpl().registerStudent(registration);
                         if (saved){
                             System.out.println("Saved");
@@ -84,19 +82,18 @@ public class RegisterFormController {
                             registerFormContext.getChildren().clear();
                             registerFormContext.getChildren().add(load);
                         }
-                    /*} catch (Exception e) {
+                    } catch (Exception e) {
 
-                    }*/
+                    }
                 }else{
                     new Alert(Alert.AlertType.WARNING,"Please add program details",ButtonType.CLOSE).showAndWait();
                 }
-                //new Alert(Alert.AlertType.CONFIRMATION,"Student registered successfully..!", ButtonType.OK).show();
             }else{
                 new Alert(Alert.AlertType.WARNING,"Error in registration process...!", ButtonType.OK).show();
             }
-        /*}catch (Exception e){
+        }catch (Exception e){
             new Alert(Alert.AlertType.WARNING,"Something went wrong...!", ButtonType.OK).show();
-        }*/
+        }
 
     }
 

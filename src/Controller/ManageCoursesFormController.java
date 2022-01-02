@@ -1,7 +1,10 @@
 package Controller;
 
+import bo.BOFactory;
 import bo.custom.CourseBO;
 import bo.custom.Impl.CourseBOImpl;
+import dao.DAOFactory;
+import dao.custom.RegisterDAO;
 import dto.CourseDTO;
 import entity.Course;
 import javafx.event.ActionEvent;
@@ -30,7 +33,8 @@ public class ManageCoursesFormController {
     public TableColumn colFee;
 
     int selectedRow = -1;
-    private CourseBO courseBO= new CourseBOImpl();
+    private CourseBO courseBO= (CourseBO) BOFactory.getBOFactory().getBO(BOFactory.BoTypes.COURSE) /*DAOFactory.getDAOFactory().getDAO(DAOFactory.DAOTypes.COURSE)*/;
+
     ArrayList<CourseDTO> allCourses;
 
     public void initialize() throws Exception {

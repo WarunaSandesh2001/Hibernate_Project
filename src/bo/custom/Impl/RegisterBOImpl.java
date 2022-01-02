@@ -1,6 +1,8 @@
 package bo.custom.Impl;
 
 import bo.custom.RegisterBO;
+import dao.DAOFactory;
+import dao.custom.CourseDAO;
 import dao.custom.RegisterDAO;
 import dao.custom.impl.RegisterDAOImpl;
 import dto.CourseDTO;
@@ -8,8 +10,11 @@ import dto.RegisterDTO;
 import entity.Course;
 import entity.Registration;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RegisterBOImpl implements RegisterBO {
-    RegisterDAO registerDAO = new RegisterDAOImpl();
+    RegisterDAO registerDAO = (RegisterDAO) DAOFactory.getDAOFactory().getDAO(DAOFactory.DAOTypes.REGISTER);
 
     @Override
     public boolean registerStudent(RegisterDTO dto) throws Exception {
@@ -17,7 +22,7 @@ public class RegisterBOImpl implements RegisterBO {
     }
 
     @Override
-    public Course getCourseByStudent(String sID) throws Exception {
+    public ArrayList<Object[]> getCourseByStudent(String sID) throws Exception {
         return registerDAO.getCourseByStudent(sID);
     }
 }

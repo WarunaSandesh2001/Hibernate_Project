@@ -1,6 +1,8 @@
 package bo.custom.Impl;
 
 import bo.custom.StudentBO;
+import dao.DAOFactory;
+import dao.custom.RegisterDAO;
 import dao.custom.StudentDAO;
 import dao.custom.impl.StudentDAOImpl;
 import dto.StudentDTO;
@@ -9,7 +11,7 @@ import entity.Student;
 import java.util.List;
 
 public class StudentBOImpl implements StudentBO {
-    private StudentDAO studentDAO= new StudentDAOImpl();
+    private StudentDAO studentDAO= (StudentDAO) DAOFactory.getDAOFactory().getDAO(DAOFactory.DAOTypes.STUDENT);
 
     @Override
     public boolean saveStudent(StudentDTO dto) throws Exception {
@@ -20,7 +22,6 @@ public class StudentBOImpl implements StudentBO {
     public String newStudentID() throws Exception {
 
         String lastID = studentDAO.getLastStudentID();
-        //System.out.println(lastID);
         if (lastID == null) {
             return "S001";
         } else {
